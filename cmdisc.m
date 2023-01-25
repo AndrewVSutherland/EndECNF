@@ -11,9 +11,11 @@ function AlgorithmOne(H:Verbose:=false)
     RT<T> := PolynomialRing(ZZ);
     RXY<X,Y> := PolynomialRing(ZZ,2);
     H := Evaluate(H,T);
+    HY := Evaluate(H,Y);
     Fp := GF(101); // auxiliary finite field, per Remark 10
     RTp<Tp> := PolynomialRing(Fp);
     RXYp<Xp,Yp> := PolynomialRing(Fp,2);
+    Hp := Evaluate(H,Tp);
     l := 2; // start with the first odd prime
     while true do
         l := NextPrime(l);
@@ -23,12 +25,11 @@ function AlgorithmOne(H:Verbose:=false)
         if IsDivisibleBy(SupersingularPolynomial(l),Hl) then continue; end if;
         if Verbose then print "Using l =",l; return 0; end if;
         phi := ClassicalModularPolynomial(l);
-        Hp := Evaluate(H,Tp);
         res := Evaluate(Resultant(Evaluate(phi,[Xp,Yp]),Evaluate(Hp,Yp),Yp),[Tp,0]);
         if not IsDivisibleBy(res,Hp) then return 0; end if;
         res := ExactQuotient(res,Hp);
         if not IsDivisibleBy(res,Hp) then return 0; end if;
-        res := Evaluate(Resultant(Evaluate(phi,[X,Y]),Evaluate(H,Y),Y),[T,0]);
+        res := Evaluate(Resultant(Evaluate(phi,[X,Y]),HY,Y),[T,0]);
         if not IsDivisibleBy(res,H) then return 0; end if;
         res := ExactQuotient(res,H);
         if not IsDivisibleBy(res,H) then return 0; end if;
@@ -55,11 +56,11 @@ function AlgorithmTwo(H:Verbose:=false)
         d := Degree(GCD(R!r,Hp));
         if d eq 0 then continue; end if;
         if GCD(Hp,Derivative(Hp)) ne 1 then continue; end if;
-        if Verbose then printf "Found a suitable prime p = %o after testing %o primes\n", p, cnt; end if;
         if d lt h and not d in h2list then return 0; end if;
         j := Roots(Hp)[1][1];
         E := EllipticCurveFromjInvariant(j);
         if IsSupersingular(E) then continue; end if;
+        if Verbose then printf "Found a suitable prime p = %o after testing %o primes\n", p, cnt; end if;
         _,_,D := EndomorphismRingData(E); // Remark 12 is not applied here
         if ClassNumber(D) ne Degree(Hp) then return 0; end if;
         return H eq HilbertClassPolynomial(D) select D else 0;
