@@ -23,7 +23,7 @@ function AlgorithmOne(H:Verbose:=false)
         Hl := ChangeRing(H,GF(l));
         if GCD(Hl,Derivative(Hl)) ne 1 then continue; end if;
         if IsDivisibleBy(SupersingularPolynomial(l),Hl) then continue; end if;
-        if Verbose then print "Using l =",l; return 0; end if;
+        if Verbose then print "Using l =",l; end if;
         phi := ClassicalModularPolynomial(l);
         res := Evaluate(Resultant(Evaluate(phi,[Xp,Yp]),Evaluate(Hp,Yp),Yp),[Tp,0]);
         if not IsDivisibleBy(res,Hp) then return 0; end if;
@@ -96,7 +96,7 @@ assert #hD1000 eq 36;
 procedure CMProfile(alg,discs:exact:=true,detail:=1)
     start := Cputime();
     R<x> := PolynomialRing(Integers());
-    if detail ne 3 then printf "Computing H_D and checking H_D(x),H_D(x+1),H_D(x)+1) for %o discriminants\n", #discs; end if;
+    if detail ne 3 then printf "Computing H_D and checking H_D(x),H_D(x)+1) for %o discriminants\n", #discs; end if;
     if detail eq 3 then printf "\\begin{tabular}{rrrrrrr}\n$h$ & $|H|$ & $D$ & $t_{\\rm HCP}$ & $t_{\\rm CM}$ & $t_{\\rm noCM}$\\\\\\toprule\n"; end if; 
     for D in discs do
         t0 := Cputime(); H := HilbertClassPolynomial(D); t0 := Cputime()-t0;
