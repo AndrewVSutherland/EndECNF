@@ -94,25 +94,6 @@ def AlgorithmTwo(H, check_monic_irreducible=False, verbose=False):
                 return D1
         return 0
 
-def TestD(D, verbose=False):
-    start = cputime()
-    x = polygen(ZZ)
-    hilbert_class_polynomial.clear_cache()
-    H = hilbert_class_polynomial(D)
-    t1 = cputime()
-    print("Checking H_D(x) for D = {}".format(D))
-    assert CMDiscriminant(H, verbose=verbose) == D
-    t1 = cputime()-t1
-    t2 = cputime()
-    #print("Checking H_D(x+1) for D = {}".format(D))
-    #assert CMDiscriminant(H(x+1), verbose=verbose) == 0
-    t2 = cputime()-t2
-    t3 = cputime()
-    #print("Checking H_D(x)+1 for D = {}".format(D))
-    #assert CMDiscriminant(H+1, verbose=verbose) == 0
-    t3 = cputime()-t3
-    print("h({})={}: {:.3f}s, {:.3f}s, {:.3f}s".format(D, D.class_number(),t1,t2,t3))
-
 D1000 = [-d for d in srange(3,1001) if d%4 in [0,3]]
 assert len(D1000) == 500
 
@@ -163,7 +144,7 @@ def CMProfile(alg, discs, exact=True, detail=1):
         assert alg(H+1) == 0
         t3 = cputime()-t3
         h = H.degree()
-        ht = max(c for c in H).log().round()
+        ht = max(abs(c) for c in H).log().round()
         if detail==1:
             print(".", end="")
             sys.stdout.flush()
