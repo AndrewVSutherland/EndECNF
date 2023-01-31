@@ -279,6 +279,6 @@ def CMProfile(alg, discs, exact=True, detail=1):
 # display usage instruction on loading this file
 
 print("Example usage:")
-print("CMProfile(AlgorithmTwo,[r[2] for r in hD100], detail=3)")
+print("CMProfile(AlgorithmTwo,[r[1] for r in hD100], detail=3)")
 print("or")
-print("CMProfile(AlgorithmOne,[r[2] for r in hD100], exact=False, detail=2)")
+print("CMProfile(AlgorithmOne,[r[1] for r in hD100], exact=False, detail=2)")
