@@ -203,7 +203,7 @@ def AlgorithmTwo(H, check_monic_irreducible=False, verbose=False):
         if E.is_supersingular():
             continue
         if verbose:
-            print("Found a suitable prime p = {} after testing {} primes\n".format(p, n))
+            print("Found a suitable prime p = {} after testing {} primes".format(p, n))
         D = End13(E,h) # Apply Remark 13
         if D == 0:
             return 0
