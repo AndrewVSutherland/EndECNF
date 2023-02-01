@@ -188,10 +188,16 @@ def AlgorithmTwo(H, check_monic_irreducible=False, verbose=False):
         p = next_prime(p)  # Remark 11 is not applied here (this is asymptotically suboptimal)
         n += 1
         Hp = H.change_ring(GF(p))
-        z = Hp.parent().quotient(Hp).gen()
-        r = z**p-z
-        d = r.lift().gcd(Hp).degree()  # number of roots mod p
-        #assert d==len(Hp.roots())
+        # Compute X^p-X mod Hp manually, avoiding quotient ring
+        r = zpow = z = Hp.parent().gen()
+        m = p>>1
+        while m:
+            zpow = (zpow**2) % Hp
+            if m & 1:
+                r = (zpow * r) % Hp
+            m >>= 1
+        # now r = X^p mod Hp
+        d = (r-z).gcd(Hp).degree()  # number of roots mod p
         if d==0:
             continue
         if not Hp.is_squarefree():
@@ -279,6 +285,6 @@ def CMProfile(alg, discs, exact=True, detail=1):
 # display usage instruction on loading this file
 
 print("Example usage:")
-print("CMProfile(AlgorithmTwo,[r[2] for r in hD100], detail=3)")
+print("CMProfile(AlgorithmTwo,[r[1] for r in hD100], detail=3)")
 print("or")
-print("CMProfile(AlgorithmOne,[r[2] for r in hD100], exact=False, detail=2)")
+print("CMProfile(AlgorithmOne,[r[1] for r in hD100], exact=False, detail=2)")
