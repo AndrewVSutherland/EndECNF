@@ -1,5 +1,5 @@
 # EndECNF
-Software associated to the paper [Computing the endomorphism ring of an elliptic curve over a number field](http://arxiv.org/abs/2301.11169), by John E. Cremona and Andrew V. Sutherland
+Software associated to the paper *[Computing the endomorphism ring of an elliptic curve over a number field](http://arxiv.org/abs/2301.11169)*, by John E. Cremona and Andrew V. Sutherland
 
 This repository includes sample implementations of Algorithm 1 and Algorithm 2 described in the paper in the following computer algebra systems
 
