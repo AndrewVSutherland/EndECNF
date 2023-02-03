@@ -79,15 +79,16 @@ OnFloor(E,ell) =
 \\ the conductor of the order End(E)).
 {
 HeightAboveFloor(E,ell,e) =
-    my(j=E.j, s, phi, j1, j0, h, r);
+    my(j=E.j, phi, j1, j0, h, r);
     if (e==0, return(0));
     if (j==0 || j==1728, return(e));
-    s = !OnFloor(E,ell);
-    if (e <= 1 || s == 0, return(s));
     phi = polmodular(ell);
     j1 = polrootsmod(subst(phi,y,j));
-    if (#j1 != ell+1, return(e)); \\ double roots can only happen at the surface
-    if (#j1 < 3, return(0));
+    nj1 = #j1;
+    on_floor = if(ell==2, vecsum([c%2==0 | c<-ellgroup(E)]) < 2, nj1 <=ell);
+    if(on_floor, return(0));
+    if (e==1 || nj1 != ell+1, return(e)); \\ double roots can only happen at the surface
+    if (nj1 < 3, return(0));
     j0 = [j,j,j];
     h = 1;
     while(1,

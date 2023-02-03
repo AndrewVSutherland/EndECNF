@@ -92,15 +92,6 @@ def OrderClassNumber(D0,h0,f):
         return n//2
     return n*h0
 
-def OnFloor(E,ell):
-    r"""
-    Returns True if a given ordinary E/Fq is on the floor of its ell-volcano and False otherwise
-    """
-    if ell == 2:
-        return E.two_torsion_rank() < 2
-    x = polygen(E.base_field())
-    return len(gen_to_sage(pari.polmodular(ell),{'x':x,'y':E.j_invariant()}).roots()) <= ell
-
 def HeightAboveFloor(E,ell,e):
     """Given ordinary E/Fq, a prime ell, and the height of the
     ell-volcano containing j(E) (which is the ell-adic valuation of
@@ -114,23 +105,24 @@ def HeightAboveFloor(E,ell,e):
     j = E.j_invariant()
     if j in [0, 1728]:
         return e
-    s = 0 if OnFloor(E,ell) else 1
-    if e <= 1 or s == 0:
-        return s
     F = j.parent()
     x = polygen(F)
     X,Y = polygens(F,['X', 'Y'],2)
-    phi = gen_to_sage(pari.polmodular(ell),{'x':X,'y':Y})
-    j1 = phi([j,x]).roots(multiplicities=False)
-    if len(j1) != ell+1:  # double roots can only happen at the surface
+    phi = gen_to_sage(pari.polmodular(ell),{'x':X, 'y':Y})
+    j1 = phi([x,j]).roots(multiplicities=False)
+    nj1 = len(j1)
+    on_floor = E.two_torsion_rank() < 2 if ell==2 else nj1 <= ell
+    if on_floor:
+        return 0
+    if e == 1 or nj1 != ell+1:  # double roots can only happen at the surface
         return e
-    if len(j1) < 3:
+    if nj1 < 3:
         return 0
     j0 = [j,j,j]
     h = 1
     while True:
         for i in range(3):
-            r = (phi([j1[i],x])//(x-j0[i])).roots(multiplicities=False)
+            r = (phi([x,j1[i]])//(x-j0[i])).roots(multiplicities=False)
             if not r:
                 return h
             j0[i] = j1[i]
