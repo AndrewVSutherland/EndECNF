@@ -9,4 +9,4 @@ This repository includes sample implementations of Algorithm 1 and Algorithm 2 d
 
 These are unoptimized implementations that incorporate some but not all of the implementation suggestions noted in Remarks in the paper (see the individual source files for details).
 
-All three implementations include a function `CMProfile` that can be used to compare the perforamnce of the implementations.  This function was used to generate the timings for Algorithms 1 and 2 that are listed in the paper.
+All three implementations include a function `CMProfile` that can be used to compare the perforamnce of the implementations.  This function was used to generate the timings for Algorithms 2 that are listed in Table 1 of the paper using median discriminants taken from the file [cmdiscs1000.txt](cmdiscs1000.txt), which contains a list of discriminants $D<0$ with $h(D) \le 1000$ that is known to be complete under GRH.
