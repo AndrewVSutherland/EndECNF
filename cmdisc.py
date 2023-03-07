@@ -155,6 +155,7 @@ def End13(E,h):
     L = sorted(list(Set(sum([c.prime_factors() for c in cs], []))))
     for ell in L:
         e = HeightAboveFloor(E,ell,v.valuation(ell))
+        #print("p={}, E={}, ell={}, e={} --> {}".format(p,E.ainvs(),ell,v.valuation(ell),e))
         cs = [c for c in cs if c.valuation(ell) == e]
         if not cs:
             return 0
@@ -180,16 +181,10 @@ def AlgorithmTwo(H, check_monic_irreducible=False, verbose=False):
         p = next_prime(p)  # Remark 11 is not applied here (this is asymptotically suboptimal)
         n += 1
         Hp = H.change_ring(GF(p))
-        # Compute X^p-X mod Hp manually, avoiding quotient ring
-        r = zpow = z = Hp.parent().gen()
-        m = p>>1
-        while m:
-            zpow = (zpow**2) % Hp
-            if m & 1:
-                r = (zpow * r) % Hp
-            m >>= 1
-        # now r = X^p mod Hp
-        d = (r-z).gcd(Hp).degree()  # number of roots mod p
+        # Compute X^p-X mod Hp
+        z = Hp.parent().gen()
+        r = pow(z, p, Hp) - z
+        d = r.gcd(Hp).degree()  # number of roots mod p
         if d==0:
             continue
         if not Hp.is_squarefree():
