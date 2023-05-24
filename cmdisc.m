@@ -46,6 +46,8 @@ function OrderClassNumber(D0,h0,f)
     return n*h0;
 end function;
 
+NumberOfRoots := func<f|&+[a[i][2]*(#b[i] gt 0 select Degree(b[i][1][2]) else 0):i in [1..#a]] where b := [DistinctDegreeFactorization(r[1]:Degree:=1):r in a] where a:= SquareFreeFactorization(f)>;
+
 // returns true if a given ordinary E/Fq is on the floor of its ell-volcano and false otherwise
 function OnFloor(E,ell)
     if ell eq 2 then return #TwoTorsionSubgroup(E) lt 4; end if;
